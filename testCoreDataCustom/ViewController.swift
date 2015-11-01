@@ -27,14 +27,23 @@ class ViewController: UIViewController {
         let fetchRequest = NSFetchRequest(entityName: "Coord")
         
         do {
-            let results =
-            try sharedAppDelegate.managedObjectContext.executeFetchRequest(fetchRequest)
+            let results = try sharedAppDelegate.managedObjectContext.executeFetchRequest(fetchRequest)
             let zoom = results as! [NSManagedObject]
             print("ZOOOM : \(zoom)")
             //only works with this implementation, but only returns what's about to be saved to the context....
             //let coords : Coord = Coord(context: self.sharedAppDelegate.managedObjectContext)
-            let savedLat = zoom[2].valueForKey("latitude") as! Double
-            print("+++++: \(savedLat)")
+            if zoom.count > 0 {
+                let savedLat = zoom[0].valueForKey("latitude") as! Double
+                print("+++++: \(savedLat)")
+    //transformable
+                let savedUserCoords = zoom[0].valueForKey("coordLoc") as! UserData
+                print("made it here")
+                let decodedCoords = savedUserCoords.myLat
+                print("decoded lat : \(decodedCoords)")
+    //end transformable
+            } else {
+                print("no saved items exist")
+            }
         } catch let error as NSError {
             print("Could not fetch \(error), \(error.userInfo)")
         }
@@ -70,6 +79,10 @@ class ViewController: UIViewController {
         //let newCoords : CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: lat, longitude: long )
         coords.latitude = lat
         coords.longitude = long
+    //transformable
+        let uData = UserData(lat: lat+long, long: lat-long)
+        coords.coordLoc = uData
+    //end transformable
         self.saveContext()
         print("things : \(lat), \(long), \(coords)")
         let savedLat = coords.valueForKey("latitude") as! Double

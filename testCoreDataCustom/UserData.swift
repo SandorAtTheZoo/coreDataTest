@@ -8,22 +8,27 @@
 
 import Foundation
 
+//fixed init problem from :
+//https://github.com/mattneub/Programming-iOS-Book-Examples/blob/master/bk2ch23p798basicFileOperations/ch36p1053basicFileOperations/Person.swift
+
 class UserData : NSObject, NSCoding {
     var myLat : Double = 0.332
     var myLong : Double = 1.11
     
     func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(myLat, forKey: "lat")
-        aCoder.encodeObject(myLong, forKey: "long")
+        aCoder.encodeObject(self.myLat, forKey: "lat")
+        aCoder.encodeObject(self.myLong, forKey: "long")
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    required init(coder aDecoder: NSCoder) {
         super.init()
         myLat = aDecoder.decodeObjectForKey("lat") as! Double
         myLong = aDecoder.decodeObjectForKey("long") as! Double
     }
     
-    override init() {
-        
+    init(lat : Double, long : Double) {
+        self.myLat = lat
+        self.myLong = long
+        super.init()
     }
 }

@@ -15,7 +15,7 @@ class Coord: NSManagedObject {
 // Insert code here to add functionality to your managed object subclass
     @NSManaged var latitude : Double
     @NSManaged var longitude : Double
-    //@NSManaged var vtLocation : UserData?
+    @NSManaged var coordLoc : UserData?
     
     override init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
         super.init(entity: entity, insertIntoManagedObjectContext: context)
